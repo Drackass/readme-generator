@@ -16,7 +16,10 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className={inter.className}>{children}</body>
+      <body className={`${inter.className} dark relative min-h-screen`}>
+        <div className="fixed z-50 top-0 w-full h-16 bg-gradient-to-b from-background to-transparent pointer-events-none "></div>
+        {children}
+      </body>
     </html>
   );
 }
