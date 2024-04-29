@@ -9,31 +9,14 @@ const inter = Inter({ subsets: ["latin"] });
 const year = new Date().getFullYear();
 
 interface BackgroundThumbnailProps {
-  color: {
-    hex: string;
-  };
-  darkMode: boolean;
   elementRef: React.RefObject<HTMLDivElement>;
-  selectedImage: string | undefined;
-  title: string;
-  info: string;
-  // features: {
-  //     checked: boolean;
-  //     image: string;
-  //     name: string;
-  // }[];
 }
 
-export default function BackgroungThumbnail({
-  color,
-  darkMode,
+export default function BackgroundThumbnail({
   elementRef,
-  selectedImage,
-  title,
-  info,
 }: BackgroundThumbnailProps) {
   const { thumbnail} = useThumbnail();
-  const { features } = thumbnail;
+
   const splitString = (str: string) => {
     const highlights = str.match(/'(.*?)'/g);
     const globals = str.match(/(?:'([^']*)'|([^'"\s]+(?:\s+[^'"\s]+)*))/g);
@@ -46,7 +29,7 @@ export default function BackgroungThumbnail({
                 <br />
                 <span
                   key={index}
-                  style={{ color: color.hex }}
+                  style={{ color: thumbnail.hexColor }}
                   className="mr-1"
                 >
                   {text.replace(/'/g, "")}
@@ -64,49 +47,49 @@ export default function BackgroungThumbnail({
   return (
     <div
       className="rounded-md overflow-hidden"
-      style={{ filter: `drop-shadow(0px 0px 100px ${color.hex}22)` }}
+      style={{ filter: `drop-shadow(0px 0px 100px ${thumbnail.hexColor}22)` }}
     >
       <div
         ref={elementRef}
         className={`${inter.className} aspect-video relative h-full w-full ${
-          darkMode ? "bg-black text-white" : "bg-white text-black"
+          thumbnail.darkMode ? "bg-black text-white" : "bg-white text-black"
         } flex flex-col justify-between p-5 font-semibold overflow-hidden`}
       >
         <div
           className={`w-full h-full absolute bottom-0 left-0 z-10 bg-gradient-to-t ${
-            darkMode ? "from-black " : "from-white"
+            thumbnail.darkMode ? "from-black " : "from-white"
           } to-transparent`}
         ></div>
         <div
           className={`w-full h-1/3 absolute top-0 left-0 z-10 bg-gradient-to-b ${
-            darkMode ? "from-black" : "from-white"
+            thumbnail.darkMode ? "from-black" : "from-white"
           } to-transparent`}
         ></div>
         <div
           style={{
-            background: `linear-gradient(180deg, ${color.hex} 0%, rgba(0,0,0,0) 100%)`,
+            background: `linear-gradient(180deg, ${thumbnail.hexColor} 0%, rgba(0,0,0,0) 100%)`,
           }}
           className="opacity-25 w-full h-full absolute top-0 left-0 z-10"
         ></div>
         <Image
           width={1280}
           height={720}
-          src={selectedImage ?? (darkMode ? imageDark : imageLight)}
-          alt={`${title}-${year}`}
+          src={thumbnail.selectedImage ?? (thumbnail.darkMode ? imageDark : imageLight)}
+          alt={`${thumbnail.title}-${year}`}
           className="absolute w-full h-full top-0 left-0 object-cover rounded-md"
         />
         <span className="absolute right-[1.25rem] text-4xl font-extrabold z-10">
-          {info}
+          {thumbnail.info}
         </span>
 
         <div className="z-20">
           <p className="text-3xl font-extrabold">{year}</p>
         </div>
         <div className="text-6xl z-20 flex flex-col gap-3">
-          <p>{splitString(title)}</p>
+          <p>{splitString(thumbnail.title)}</p>
 
           <div className="flex gap-2 flex-wrap">
-            {features.map((feature, index) => {
+            {thumbnail.features.map((feature, index) => {
               return feature.checked ? (
                 <Image
                   key={index}

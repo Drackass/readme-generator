@@ -1,12 +1,5 @@
 "use client";
-import {
-  Check,
-  ChevronsUpDown,
-  GalleryThumbnails,
-  ImageDown,
-  Moon,
-  Sun,
-} from "lucide-react";
+import { GalleryThumbnails, ImageDown, Moon, Sun } from "lucide-react";
 import Thumbnail from "./Thumbnail";
 import { Button } from "./ui/button";
 import { Input } from "./ui/input";
@@ -17,37 +10,41 @@ import { colorsPicker, thumbnailsTypes } from "@/lib/data";
 import { toPng } from "html-to-image";
 import { Label } from "./ui/label";
 import { Textarea } from "@/components/ui/textarea";
-
-import { cn } from "@/lib/utils";
-import {
-  Command,
-  CommandEmpty,
-  CommandGroup,
-  CommandInput,
-  CommandItem,
-  CommandList,
-} from "@/components/ui/command";
-import {
-  Popover,
-  PopoverContent,
-  PopoverTrigger,
-} from "@/components/ui/popover";
 import DefaultThumbnail from "./DefaultTumbnail";
 import BackgroungThumbnail from "./BackgroundThumbnaill";
 import NeonThumbnail from "./NeonThumbnail";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
+import Features from "./Features";
+import { useThumbnail } from "@/context/thumbnail-context";
+// type feature = {
+//   name: string;
+//   logoDark: string;
+//   logoLight: string;
+//   label: string;
+//   checked: boolean;
+// }
 
+// type Thumbnail = {
+//   hexColor: string;
+//   darkMode: boolean;
+//   selectedImage: string | null;
+//   title: string;
+//   features: feature[]
+// };
 export default function ThumbnailGen() {
   const elementRef = useRef(null);
-  const [color, setColor] = useState({ hex: "#dc2626" });
-  const [title, setTitle] = useState("Full Stack 'Netflix' Clone");
-  const [darkMode, setDarkMode] = useState(true);
-  const [selectedImage, setSelectedImage] = useState<string>();
-  const [info, setInfo] = useState("#42");
-  const [open, setOpen] = useState(false);
-  const [value, setValue] = useState(thumbnailsTypes[0]?.value || "");
-
+  const { thumbnail, setThumbnail } = useThumbnail();
+  
   const htmlToImageConvert = () => {
-    toPng(elementRef.current ?? document.createElement('div') , { cacheBust: false })
+    toPng(elementRef.current ?? document.createElement("div"), {
+      cacheBust: false,
+    })
       .then((dataUrl) => {
         const link = document.createElement("a");
         link.download = `tumbnail.png`;
@@ -67,43 +64,23 @@ export default function ThumbnailGen() {
       <div className="flex items-center justify-center space-x-2">
         <Sun />
         <Switch
-          checked={darkMode}
-          onCheckedChange={() => setDarkMode(!darkMode)}
+          checked={thumbnail.darkMode}
+          onCheckedChange={() =>
+            setThumbnail({ ...thumbnail, darkMode: !thumbnail.darkMode })
+          }
           id="darkmode"
         />
         <Moon />
       </div>
-      {value === "default" && (
-        <DefaultThumbnail
-          color={color}
-          darkMode={darkMode}
-          elementRef={elementRef}
-          selectedImage={selectedImage}
-          title={title}
-          info={info}
-        />
+      {}
+      {thumbnail.Type === "default" && (
+        <DefaultThumbnail elementRef={elementRef} />
       )}
-      {value === "background" && (
-        <BackgroungThumbnail
-          color={color}
-          darkMode={darkMode}
-          elementRef={elementRef}
-          selectedImage={selectedImage}
-          title={title}
-          info={info}
-        />
+      {thumbnail.Type === "background" && (
+        <BackgroungThumbnail elementRef={elementRef} />
       )}
 
-      {value === "neon" && (
-        <NeonThumbnail
-          color={color}
-          darkMode={darkMode}
-          elementRef={elementRef}
-          selectedImage={selectedImage}
-          title={title}
-          info={info}
-        />
-      )}
+      {thumbnail.Type === "neon" && <NeonThumbnail elementRef={elementRef} />}
 
       <Button
         className="w-full"
@@ -117,75 +94,42 @@ export default function ThumbnailGen() {
         <div>
           <CirclePicker
             colors={[...colorsPicker]}
-            color={color.hex}
-            onChangeComplete={(color: SetStateAction<{ hex: string }>) =>
-              setColor(color)
+            color={thumbnail.hexColor}
+            onChangeComplete={(color) =>
+              setThumbnail({ ...thumbnail, hexColor: color.hex })
             }
             className="!grid grid-cols-7"
           />
         </div>
         <div className="flex flex-col gap-5 flex-1">
           <Textarea
-            value={title}
-            onChange={(e) => setTitle(e.target.value)}
+            value={thumbnail.title}
+            onChange={(e) =>
+              setThumbnail({ ...thumbnail, title: e.target.value })
+            }
             className="resize-none"
           />
 
           <div className="flex gap-5">
             <Input
               type="text"
-              value={info}
-              onChange={(e) => setInfo(e.target.value)}
+              value={thumbnail.info}
+              onChange={(e) =>
+                setThumbnail({ ...thumbnail, info: e.target.value })
+              }
             />
-            <Popover open={open} onOpenChange={setOpen}>
-              <PopoverTrigger asChild>
-                <Button
-                  variant="outline"
-                  role="combobox"
-                  aria-expanded={open}
-                  className="w-[200px] justify-between"
-                >
-                  {value
-                    ? thumbnailsTypes.find(
-                        (thumbnail) => thumbnail.value === value
-                      )?.label
-                    : "Select Type..."}
-                  <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
-                </Button>
-              </PopoverTrigger>
-              <PopoverContent className="w-[200px] p-0">
-                <Command>
-                  <CommandInput placeholder="Search Type..." />
-                  <CommandEmpty>No framework found.</CommandEmpty>
-                  <CommandGroup>
-                    <CommandList>
-                      {thumbnailsTypes.map((thumbnail) => (
-                        <CommandItem
-                          key={thumbnail.value}
-                          value={thumbnail.value}
-                          onSelect={(currentValue) => {
-                            setValue(
-                              currentValue === value ? "" : currentValue
-                            );
-                            setOpen(false);
-                          }}
-                        >
-                          <Check
-                            className={cn(
-                              "mr-2 h-4 w-4",
-                              value === thumbnail.value
-                                ? "opacity-100"
-                                : "opacity-0"
-                            )}
-                          />
-                          {thumbnail.label}
-                        </CommandItem>
-                      ))}
-                    </CommandList>
-                  </CommandGroup>
-                </Command>
-              </PopoverContent>
-            </Popover>
+            <Select onValueChange={(value) => setThumbnail({ ...thumbnail, Type: value })}>
+              <SelectTrigger className="w-full">
+                <SelectValue placeholder={"Default"}></SelectValue>
+              </SelectTrigger>
+              <SelectContent>
+                {thumbnailsTypes.map((type) => (
+                  <SelectItem key={type.value} value={type.value}>
+                    {type.label}
+                  </SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
           </div>
         </div>
       </div>
@@ -207,13 +151,21 @@ export default function ThumbnailGen() {
             accept="image/*"
             id="dropzone-file"
             className="hidden"
+            // onChange={(e) => {
+            //   const file = e.target.files?.[0];
+            //   setSelectedImage(file ? URL.createObjectURL(file) : undefined);
+            // }}
             onChange={(e) => {
               const file = e.target.files?.[0];
-              setSelectedImage(file ? URL.createObjectURL(file) : undefined);
+              setThumbnail({
+                ...thumbnail,
+                selectedImage: file ? URL.createObjectURL(file) : undefined,
+              });
             }}
           />
         </Label>
       </div>
+      <Features />
     </div>
   );
 }

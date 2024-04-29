@@ -19,7 +19,7 @@ export const colorsPicker = [
   "#e11d48",
 ] as const;
 
-export const features = [
+export const featuresList = [
     {
       name: "nextjs",
       logoDark: "dark/nextjs.png",
