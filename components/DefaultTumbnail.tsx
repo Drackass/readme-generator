@@ -3,11 +3,12 @@ import Image from "next/image";
 import { Inter } from "next/font/google";
 import imageLight from "@/public/light.png";
 import imageDark from "@/public/dark.png";
+import { useThumbnail } from "@/context/thumbnail-context";
 
 const inter = Inter({ subsets: ["latin"] });
 const year = new Date().getFullYear();
 
-interface ThumbnailProps {
+interface DefaultThumbnailProps {
   color: {
     hex: string;
   };
@@ -16,21 +17,18 @@ interface ThumbnailProps {
   selectedImage: string | undefined;
   title: string;
   info: string;
-  // features: {
-  //     checked: boolean;
-  //     image: string;
-  //     name: string;
-  // }[];
 }
 
-export default function Thumbnail({
+export default function DefaultThumbnail({
   color,
   darkMode,
   elementRef,
   selectedImage,
   title,
   info,
-}: ThumbnailProps) {
+}: DefaultThumbnailProps) {
+  const { thumbnail} = useThumbnail();
+  const { features } = thumbnail;
   const splitString = (str: string) => {
     const highlights = str.match(/'(.*?)'/g);
     const globals = str.match(/(?:'([^']*)'|([^'"\s]+(?:\s+[^'"\s]+)*))/g);
@@ -41,11 +39,7 @@ export default function Thumbnail({
             return (
               <>
                 <br />
-                <span
-                  key={index}
-                  style={{ color: color.hex }}
-                  className="uppercase mr-1"
-                >
+                <span key={index} style={{ color: color.hex }} className="mr-1">
                   {text.replace(/'/g, "")}
                 </span>
               </>
@@ -87,27 +81,27 @@ export default function Thumbnail({
         <span className="absolute right-[1.25rem] text-4xl font-extrabold ">
           {info}
         </span>
-        
+
         <div className="z-20">
           <p className="text-3xl font-extrabold">{year}</p>
         </div>
         <div className="text-6xl z-20 flex flex-col gap-3">
           <p>{splitString(title)}</p>
 
-          {/* <div className="flex gap-2 flex-wrap">
-                        {features.map((feature, index) => {
-                            return feature.checked ? (
-                                <Image
-                                    key={index}
-                                    width={30}
-                                    height={30}
-                                    src={`/features/${feature.image}`}
-                                    alt={feature.name}
-                                    className="object-contain"
-                                />
-                            ) : null;
-                        })}
-                    </div> */}
+          <div className="flex gap-2 flex-wrap">
+            {features.map((feature, index) => {
+              return feature.checked ? (
+                <Image
+                  key={index}
+                  width={30}
+                  height={30}
+                  src={`/features/${feature.logoDark}`}
+                  alt={feature.name}
+                  className="object-contain"
+                />
+              ) : null;
+            })}
+          </div>
         </div>
       </div>
     </div>

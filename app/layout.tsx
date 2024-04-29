@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import "./globals.css";
+import ThumbnailContextProvider from "@/context/thumbnail-context";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -18,7 +19,9 @@ export default function RootLayout({
     <html lang="en">
       <body className={`${inter.className} dark relative min-h-screen`}>
         <div className="fixed z-50 top-0 w-full h-16 bg-gradient-to-b from-background to-transparent pointer-events-none "></div>
+        <ThumbnailContextProvider>
         {children}
+        </ThumbnailContextProvider>
       </body>
     </html>
   );

@@ -161,3 +161,18 @@ export const features = [
       checked: false,
     }
   ] as const;
+
+  export const thumbnailsTypes = [
+    {
+      value: "default",
+      label: "Default",
+    },
+    {
+      value: "background",
+      label: "Background",
+    },
+    {
+      value: "neon",
+      label: "Neon",
+    },
+  ]
