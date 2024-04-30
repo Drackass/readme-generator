@@ -50,7 +50,13 @@ export default function ReadMeGen() {
         readme.repositoryUrl.split("https://github.com/")[1]
       }.git \n\`\`\``
     );
-  }, [features, thumbnail.title, readme.title, readme.description, readme.repositoryUrl]);
+  }, [
+    features,
+    thumbnail.title,
+    readme.title,
+    readme.description,
+    readme.repositoryUrl,
+  ]);
 
   return (
     <div className="flex flex-col gap-5">
