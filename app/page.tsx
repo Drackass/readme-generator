@@ -10,7 +10,7 @@ export default function Home() {
 
 
   return (
-    <div id="app" className="relative overflow-y-hidden">
+    <div id="app" className="relative overflow-y-hidden min-h-screen">
       <main className="max-w-2xl mx-auto flex flex-col gap-5 justify-center items-center pb-[8rem] p-6 mt-10">
         <Tabs defaultValue="thumbnail" className="w-full">
           <TabsList className="fixed top-5 left-1/2 -translate-x-1/2 backdrop-blur-sm bg-muted/80 border z-50">

@@ -4,45 +4,19 @@ import { Inter } from "next/font/google";
 import imageLight from "@/public/light.png";
 import imageDark from "@/public/dark.png";
 import { useThumbnail } from "@/context/thumbnail-context";
+import SplitTitle from "./SplitTitle";
 
 const inter = Inter({ subsets: ["latin"] });
 const year = new Date().getFullYear();
 
 interface BackgroundThumbnailProps {
-  elementRef: React.RefObject<HTMLDivElement>;
+  elementRef?: React.RefObject<HTMLDivElement>;
 }
 
 export default function BackgroundThumbnail({
   elementRef,
 }: BackgroundThumbnailProps) {
   const { thumbnail} = useThumbnail();
-
-  const splitString = (str: string) => {
-    const highlights = str.match(/'(.*?)'/g);
-    const globals = str.match(/(?:'([^']*)'|([^'"\s]+(?:\s+[^'"\s]+)*))/g);
-    return (
-      <>
-        {globals?.map((text, index) => {
-          if (highlights?.includes(text)) {
-            return (
-              <>
-                <br />
-                <span
-                  key={index}
-                  style={{ color: thumbnail.hexColor }}
-                  className="mr-1"
-                >
-                  {text.replace(/'/g, "")}
-                </span>
-              </>
-            );
-          } else {
-            return <span key={index}>{text}</span>;
-          }
-        })}
-      </>
-    );
-  };
 
   return (
     <div
@@ -86,7 +60,9 @@ export default function BackgroundThumbnail({
           <p className="text-3xl font-extrabold">{year}</p>
         </div>
         <div className="text-6xl z-20 flex flex-col gap-3">
-          <p>{splitString(thumbnail.title)}</p>
+          <p>
+          <SplitTitle title={thumbnail.title}/>
+          </p>
 
           <div className="flex gap-2 flex-wrap">
             {thumbnail.features.map((feature, index) => {

@@ -5,6 +5,7 @@ import ThumbnailContextProvider from "@/context/thumbnail-context";
 import { Toaster } from "@/components/ui/toaster";
 import ThemeContextProvider from "@/context/theme-context";
 import ThemeSwitch from "@/components/theme-switch";
+import ReadmeContextProvider from "@/context/readme-context";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -24,7 +25,9 @@ export default function RootLayout({
         <div className="fixed z-50 top-0 w-full h-16 bg-gradient-to-b from-background to-transparent pointer-events-none "></div>
         <ThemeContextProvider>
           <ThumbnailContextProvider>
+            <ReadmeContextProvider>
             {children}
+            </ReadmeContextProvider>
             <ThemeSwitch />
           </ThumbnailContextProvider>
         </ThemeContextProvider>

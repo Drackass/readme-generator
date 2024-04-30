@@ -22,6 +22,7 @@ import {
 } from "@/components/ui/select";
 import Features from "./Features";
 import { useThumbnail } from "@/context/thumbnail-context";
+import BackgroundThumbnail from "./BackgroundThumbnaill";
 // type feature = {
 //   name: string;
 //   logoDark: string;
@@ -40,7 +41,7 @@ import { useThumbnail } from "@/context/thumbnail-context";
 export default function ThumbnailGen() {
   const elementRef = useRef(null);
   const { thumbnail, setThumbnail } = useThumbnail();
-  
+
   const htmlToImageConvert = () => {
     toPng(elementRef.current ?? document.createElement("div"), {
       cacheBust: false,
@@ -72,16 +73,13 @@ export default function ThumbnailGen() {
         />
         <Moon />
       </div>
-      {}
-      {thumbnail.Type === "default" && (
+      {thumbnail.Type === "background" ? (
+        <BackgroundThumbnail elementRef={elementRef} />
+      ) : thumbnail.Type === "neon" ? (
+        <NeonThumbnail elementRef={elementRef} />
+      ) : (
         <DefaultThumbnail elementRef={elementRef} />
       )}
-      {thumbnail.Type === "background" && (
-        <BackgroungThumbnail elementRef={elementRef} />
-      )}
-
-      {thumbnail.Type === "neon" && <NeonThumbnail elementRef={elementRef} />}
-
       <Button
         className="w-full"
         onClick={htmlToImageConvert}
@@ -118,7 +116,11 @@ export default function ThumbnailGen() {
                 setThumbnail({ ...thumbnail, info: e.target.value })
               }
             />
-            <Select onValueChange={(value) => setThumbnail({ ...thumbnail, Type: value })}>
+            <Select
+              onValueChange={(value) =>
+                setThumbnail({ ...thumbnail, Type: value })
+              }
+            >
               <SelectTrigger className="w-full">
                 <SelectValue placeholder={"Default"}></SelectValue>
               </SelectTrigger>

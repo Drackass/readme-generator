@@ -42,12 +42,12 @@ type ThumbnailContextProviderProps = {
   children: React.ReactNode;
 };
 
-type ThemeContextType = {
+type ThumbnailContextType = {
   thumbnail: Thumbnail;
   setThumbnail: React.Dispatch<React.SetStateAction<Thumbnail>>
 };
 
-const ThumbnailContext = createContext<ThemeContextType | null>(null);
+const ThumbnailContext = createContext<ThumbnailContextType | null>(null);
 
 export default function ThumbnailContextProvider({
   children,
