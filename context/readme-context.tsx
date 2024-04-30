@@ -5,14 +5,12 @@ type Readme = {
   repositoryUrl: string;
   title: string;
   description: string;
-  content: string;
 };
 
 const initReadme: Readme = {
   repositoryUrl: "",
   title: "Build a E-Commerce website With Next.js (2024)",
   description: "💰 This repository is made to contain a Full Stack E-Commerce website.",
-  content: ""
 };
 
 type ReadmeContextProviderProps = {

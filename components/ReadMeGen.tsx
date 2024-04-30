@@ -9,7 +9,6 @@ import {
   Type,
 } from "lucide-react";
 import { useEffect, useState } from "react";
-import Markdown from "react-markdown";
 import {
   Card,
   CardContent,
@@ -35,28 +34,23 @@ export default function ReadMeGen() {
   const { readme, setReadme } = useReadme();
   const { thumbnail } = useThumbnail();
   const [markdown, setMarkdown] = useState<string>("");
-  const [repository, setRepository] = useState<string>("");
-  const [title, setTitle] = useState<string>("Project Title");
-  const [description, setDescription] = useState<string>(
-    "⚙️ lorem ipsum dolor sit amet, consectetur adipiscing elit."
-  );
   const features = thumbnail.features.filter((feature) => feature.checked);
   useEffect(() => {
     setMarkdown(
-      `# ${title}\n\n${description}\n\n![${
-        repository.split("/")[4]
+      `# ${readme.title}\n\n![${
+        readme.repositoryUrl.split("/")[4]
       }-tumbnail](https://github.com/${
-        repository.split("https://github.com/")[1]
-      }/raw/main/public/tumbnail.png)\n\n${
+        readme.repositoryUrl.split("https://github.com/")[1]
+      }/raw/main/public/tumbnail.png)\n\n${readme.description}${
         features.length > 0
           ? "Key Features:\n\n" +
             features.map((feature) => `- ${feature.label}`).join("\n")
           : ""
-      }\n\n
-      ## Cloning the repository\n\n\`\`\`bash\ngit clone git@github.com:
-      ${repository.split("https://github.com/")[1]}.git \n\`\`\``
+      }\n\nCloning the repository\n\n\`\`\`bash\ngit clone git@github.com:${
+        readme.repositoryUrl.split("https://github.com/")[1]
+      }.git \n\`\`\``
     );
-  }, [features, thumbnail.title]);
+  }, [features, thumbnail.title, readme.title, readme.description, readme.repositoryUrl]);
 
   return (
     <div className="flex flex-col gap-5">
@@ -126,37 +120,6 @@ export default function ReadMeGen() {
               <CardDescription>README.md</CardDescription>
             </CardHeader>
             <CardContent className="flex flex-col ">
-              {/* <Markdown
-            className=""
-            components={{
-              h1: ({ node, ...props }) => (
-                <h1
-                  className="scroll-m-20 text-4xl font-extrabold tracking-tight lg:text-5xl"
-                  {...props}
-                />
-              ),
-              h3: ({ node, ...props }) => (
-                <h1
-                  className="scroll-m-20 text-2xl font-semibold tracking-tight"
-                  {...props}
-                />
-              ),
-              p: ({ node, ...props }) => (
-                <p
-                  className="leading-7 [&:not(:first-child)]:mt-6"
-                  {...props}
-                />
-              ),
-              ul: ({ node, ...props }) => (
-                <ul className="my-6 ml-6 list-disc [&>li]:mt-2" {...props} />
-              ),
-              img: ({ node, ...props }) => (
-                <img className="w-full rounded-md" {...props} />
-              ),
-            }}
-          >
-            {markdown}
-          </Markdown> */}
               <h1 className="scroll-m-20 text-4xl font-extrabold tracking-tight lg:text-5xl mb-5">
                 {readme.title}
               </h1>

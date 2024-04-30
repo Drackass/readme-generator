@@ -1,21 +1,19 @@
-# Masterclass Shadcn
+# Build a Readme Generator With Next.js (2024)
 
-💎 lorem ipsum dolor sit amet, consectetur adipiscing elit.
+![readme-generator-tumbnail](https://github.com/Drackass/readme-generator/raw/main/public/tumbnail.png)
 
-![Nextflix-tumbnail](https://github.com/Drackass/Nextflix/raw/main/public/tumbnail.png)
-
-Key Features:
+💎 This repository is made to contain a Readme GeneratorKey Features:
 
 - 📦 Package management with Next.js
 - 🔄 Dynamic state management with React
 - 💅 Modern components with Shadcn
 - 💎 Sleek styling with Tailwind
 - ⚙️ Static typing with TypeScript
+- 🌐 Server-side API development with Node.js
+- 📝 Content formatting and editing with Markdown
 
-
-      ## Cloning the repository
+Cloning the repository
 
 ```bash
-git clone git@github.com:
-      Drackass/Nextflix.git 
+git clone git@github.com:Drackass/readme-generator.git 
 ```
