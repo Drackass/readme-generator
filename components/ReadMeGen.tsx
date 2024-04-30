@@ -41,12 +41,12 @@ export default function ReadMeGen() {
         readme.repositoryUrl.split("/")[4]
       }-tumbnail](https://github.com/${
         readme.repositoryUrl.split("https://github.com/")[1]
-      }/raw/main/public/tumbnail.png)\n\n${readme.description}${
+      }/blob/main/thumbnail.png?raw=true)\n\n${readme.description}\n\n${
         features.length > 0
           ? "Key Features:\n\n" +
             features.map((feature) => `- ${feature.label}`).join("\n")
           : ""
-      }\n\nCloning the repository\n\n\`\`\`bash\ngit clone git@github.com:${
+      }\n\n### Cloning the repository\n\n\`\`\`bash\ngit clone git@github.com:${
         readme.repositoryUrl.split("https://github.com/")[1]
       }.git \n\`\`\``
     );

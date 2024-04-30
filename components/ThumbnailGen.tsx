@@ -1,17 +1,15 @@
 "use client";
 import { GalleryThumbnails, ImageDown, Moon, Sun } from "lucide-react";
-import Thumbnail from "./Thumbnail";
 import { Button } from "./ui/button";
 import { Input } from "./ui/input";
 import { CirclePicker } from "react-color";
 import { Switch } from "./ui/switch";
-import { SetStateAction, useRef, useState } from "react";
+import { useRef } from "react";
 import { colorsPicker, thumbnailsTypes } from "@/lib/data";
 import { toPng } from "html-to-image";
 import { Label } from "./ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import DefaultThumbnail from "./DefaultTumbnail";
-import BackgroungThumbnail from "./BackgroundThumbnaill";
 import NeonThumbnail from "./NeonThumbnail";
 import {
   Select,
@@ -23,21 +21,7 @@ import {
 import Features from "./Features";
 import { useThumbnail } from "@/context/thumbnail-context";
 import BackgroundThumbnail from "./BackgroundThumbnaill";
-// type feature = {
-//   name: string;
-//   logoDark: string;
-//   logoLight: string;
-//   label: string;
-//   checked: boolean;
-// }
 
-// type Thumbnail = {
-//   hexColor: string;
-//   darkMode: boolean;
-//   selectedImage: string | null;
-//   title: string;
-//   features: feature[]
-// };
 export default function ThumbnailGen() {
   const elementRef = useRef(null);
   const { thumbnail, setThumbnail } = useThumbnail();
@@ -45,10 +29,13 @@ export default function ThumbnailGen() {
   const htmlToImageConvert = () => {
     toPng(elementRef.current ?? document.createElement("div"), {
       cacheBust: false,
+      canvasWidth: 1280,
+      canvasHeight: 720,
+      
     })
       .then((dataUrl) => {
         const link = document.createElement("a");
-        link.download = `tumbnail.png`;
+        link.download = `thumbnail.png`;
         link.href = dataUrl;
         link.click();
       })
@@ -88,18 +75,19 @@ export default function ThumbnailGen() {
         Download
       </Button>
 
-      <div className="flex gap-5 justify-between">
-        <div>
+      <div className="flex gap-5 justify-between flex-col sm:flex-row">
+        <div className="w-full">
           <CirclePicker
             colors={[...colorsPicker]}
             color={thumbnail.hexColor}
             onChangeComplete={(color) =>
               setThumbnail({ ...thumbnail, hexColor: color.hex })
             }
-            className="!grid grid-cols-7"
+            width="100%"
+            className="!grid grid-cols-9 sm:grid-cols-7"
           />
         </div>
-        <div className="flex flex-col gap-5 flex-1">
+        <div className="flex flex-col gap-5 flex-shrink-0">
           <Textarea
             value={thumbnail.title}
             onChange={(e) =>

@@ -9,7 +9,7 @@ export default function Features() {
       }
     const { thumbnail, setThumbnail} = useThumbnail();
   return (
-    <div className="grid grid-cols-4 gap-5 w-full">
+    <div className="grid grid-cols-3 sm:grid-cols-4 gap-5 w-full">
     {thumbnail.features.map((feature, index) => (
       <div key={index} className="flex items-center space-x-2">
         <Checkbox
